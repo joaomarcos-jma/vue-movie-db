@@ -1,32 +1,58 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar app color="#032541" dark hide-on-scroll>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="./assets/logo.svg"
+          transition="scale-transition"
+          width="200"
+        />
+      </div>
+
+      <div class="text-center">
+        <v-menu open-on-hover v-for="(item, i) of menu_items" :key="i" top offset-x>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text dark v-bind="attrs" v-on="on">{{item.label}}</v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item v-for="(desc, index) in item.more" :key="index">
+              <v-list-item-title>{{ desc }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn :href="constant.project_url_git" target="_blank" icon>
+        <v-icon size="45">mdi-github</v-icon>
+      </v-btn>
+
+       <v-btn :href="constant.linkedin_url" target="_blank" icon>
+        <v-icon size="45">mdi-linkedin</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <router-view />
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import constants from '@/util/constants';
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+export default {
+  name: 'App',
+  data: () => ({
+    constant: constants,
+    menu_items: constants.menu_items,
+  }),
+};
+</script>
